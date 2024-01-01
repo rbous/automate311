@@ -65,12 +65,12 @@ def getEmailDict(email):
 	atts = []
 	for att in email.Attachments:
 		if not str(att).startswith('image00'):
-			fullpath = 'M:\\automate311\\' + str(att)
+			fullpath = 'M:\\automate311\\attachements\\' + str(att)
 			att.SaveAsFile(fullpath)
 			atts.append(fullpath)
 	
 	if atts:
-		dic[Attachments] = atts
+		dic['Attachments'] = atts
 	
 	return dic
 	
