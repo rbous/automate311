@@ -33,7 +33,7 @@ def allEmails():
 
 
 # function to get data from email
-def getEmailDict(email):
+def getEmailData(email):
 
 	lines = (email.Body).splitlines()
 	
@@ -41,7 +41,6 @@ def getEmailDict(email):
 	if not lines[-1].startswith('Date et heure'):
 		print('\nSorry, email is not correctly formatted.')
 		return
-	
 	
 	dic = {}
 	
@@ -60,6 +59,15 @@ def getEmailDict(email):
 			k, v = line.split(' : ', 1)
 			dic[k] = (dic.get(k, '') + ' ' + v).lstrip()
 			
+	# create formatted phone number (only digits)
+	number = ''
+	for i in dic['Numéro de téléphone (jour)']:
+		if i.isdigit():
+			number +=i
+	dic['Téléphone'] = number
+			
+	# record if requester is citizen or company
+	dic['Type'] = 'Entreprise' if "Nom de l'entreprise ou de l'organisation" in dic.keys() else 'Citoyen'
 	
 	# save attachments and add directory
 	atts = []
@@ -69,27 +77,10 @@ def getEmailDict(email):
 			att.SaveAsFile(fullpath)
 			atts.append(fullpath)
 	
-	if atts:
-		dic['Attachments'] = atts
+	dic['Attachments'] = atts
+	
 	
 	return dic
 	
-	
-	
-# select all emails with category set to Rayane
-
-successful = False
-
-for email in allEmails():
-
-	if email.Categories == '':
-	
-		data = getEmailDict(email)
-		successful = True
-
-		print('\n', data)
-		
-print('\nSUCCESS?:', successful)
-		
 
 		
