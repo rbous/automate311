@@ -11,10 +11,14 @@ def allEmails():
 	
 	# get all accounts
 	folders = outlook.Folders
-	
+
 	# choose canu account, get all folders
 	account = folders[2]
 	account_folders = account.Folders
+
+	# define draft folder to send replies
+	global drafts
+	drafts = account_folders[3]
 	
 	''' # choose folder, get subfolder
 	subfolder = account_folders[8]
@@ -45,7 +49,11 @@ def getEmailData(email):
 	dic = {}
 	
 	for i, line in enumerate(lines):
-		if line.startswith('Demande - Détails de votre demande'):
+
+		# remove 'Coordonnées - '
+		line = line.lstrip('Coordonnées - ')
+
+		if line.startswith('Demande - Détails de la demande : '):
 			k, v = line.split(' : ', 1)
 			dic[k] = v + '\n' + '\n'.join(lines[i+1:-1])
 			
@@ -83,4 +91,10 @@ def getEmailData(email):
 	return dic
 	
 
+# reply to emails
+def createReply(email):
+        reply = email.Reply()
+        newBody = "this is the reply"
+        reply.HTMLBody = newBody + reply.HTMLBody
+        reply.Move(drafts)
 		
