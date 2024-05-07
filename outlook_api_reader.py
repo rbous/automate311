@@ -51,9 +51,9 @@ def getEmailData(email):
 	for i, line in enumerate(lines):
 
 		# remove 'Coordonnées - '
-		line = line.lstrip('Coordonnées - ')
+		line = line.replace('Coordonnées - ', '')
 
-		if line.startswith('Demande - Détails de la demande : '):
+		if line.startswith('Demande - Détails'):
 			k, v = line.split(' : ', 1)
 			dic[k] = v + '\n' + '\n'.join(lines[i+1:-1])
 			
