@@ -42,7 +42,7 @@ def getEmailData(email):
 	lines = (email.Body).splitlines()
 	
 	# if email is not in requête format
-	if not lines[-1].startswith('Date et heure'):
+	if not lines[-3].startswith('Date et heure'):
 		print('\nSorry, email is not correctly formatted.')
 		return
 	
